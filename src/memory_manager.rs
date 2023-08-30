@@ -49,6 +49,7 @@ use std::cell::RefCell;
 use std::cmp::min;
 use std::collections::BTreeMap;
 use std::rc::Rc;
+use ic_cdk::println;
 
 const MAGIC: &[u8; 3] = b"MGR";
 const LAYOUT_VERSION: u8 = 1;
@@ -128,6 +129,7 @@ const HEADER_RESERVED_BYTES: usize = 32;
 /// -------------------------------------------------- <- Page ((MAX_NUM_BUCKETS - 1) * N + 1)
 /// Bucket MAX_NUM_BUCKETS                ↕ N pages
 /// ```
+
 pub struct MemoryManager<M: Memory> {
     inner: Rc<RefCell<MemoryManagerInner<M>>>,
 }
@@ -135,6 +137,7 @@ pub struct MemoryManager<M: Memory> {
 impl<M: Memory> MemoryManager<M> {
     /// Initializes a `MemoryManager` with the given memory.
     pub fn init(memory: M) -> Self {
+        println!("FOO from MEMORY!!");
         Self::init_with_bucket_size(memory, BUCKET_SIZE_IN_PAGES as u16)
     }
 
@@ -150,6 +153,7 @@ impl<M: Memory> MemoryManager<M> {
 
     /// Returns the memory associated with the given ID.
     pub fn get(&self, id: MemoryId) -> VirtualMemory<M> {
+        println!("Hello MAX!  From MemoryManager!");
         VirtualMemory {
             id,
             memory_manager: self.inner.clone(),
